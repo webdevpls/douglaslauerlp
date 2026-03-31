@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/pedrolucas/**)",
+      "Read(//Users/pedrolucas/.claude/**)",
+      "mcp__figma-local__get_design_context",
+      "mcp__figma-local__get_screenshot",
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --yes)"
+    ]
+  }
+}
