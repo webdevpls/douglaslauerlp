@@ -5,7 +5,14 @@
       "Read(//Users/pedrolucas/.claude/**)",
       "mcp__figma-local__get_design_context",
       "mcp__figma-local__get_screenshot",
-      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --yes)"
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --yes)",
+      "Bash(mkdir -p /Volumes/HD/DOUGLASLAUER/lpdouglaslauer/public/assets)",
+      "Bash(__NEW_LINE_8729d4a770c31cf2__ curl:*)",
+      "Bash(curl -s \"http://localhost:3845/assets/18a341ef8ff3f3f3b1a02395621d932b798d9e69.png\" -o \"/Volumes/HD/DOUGLASLAUER/lpdouglaslauer/public/assets/hero-overlay.png\")",
+      "Bash(curl -s \"http://localhost:3845/assets/aeb688df53f51dfcea58c858956288984bb4e827.png\" -o \"/Volumes/HD/DOUGLASLAUER/lpdouglaslauer/public/assets/who-man.png\")",
+      "Bash(curl -s \"http://localhost:3845/assets/69f006f96682ce3aa44720afc1710538ad7c09eb.png\" -o \"/Volumes/HD/DOUGLASLAUER/lpdouglaslauer/public/assets/cta-bg.png\")",
+      "Bash(npm run:*)",
+      "Bash(npm install:*)"
     ]
   }
 }
