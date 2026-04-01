@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   title: "Douglas Lauer - Consórcio com Estratégia",
   description:
     "Construção de patrimônio com consórcio de forma estratégica, segura e rentável com o Método SRF.",
+  icons: {
+    icon: "/assets/DLlogo.png",
+  },
 };
 
 export default function RootLayout({
