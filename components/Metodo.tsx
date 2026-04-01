@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { HiOutlineStar, HiOutlineShieldCheck, HiOutlineHome } from "react-icons/hi";
 import { BiDollarCircle } from "react-icons/bi";
 import { MdArrowForward, MdClose } from "react-icons/md";
@@ -39,6 +39,27 @@ const cards: {
     wide: true,
   },
 ];
+
+function useInView(threshold = 0.1) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          obs.disconnect();
+        }
+      },
+      { threshold }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return { ref, visible };
+}
 
 export default function Metodo() {
   const [selected, setSelected] = useState<(typeof cards)[0] | null>(null);
@@ -83,23 +104,10 @@ export default function Metodo() {
           </div>
         </div>
 
-        {/* Cards */}
+        {/* Cards com animação escalonada */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {cards.map((card) => (
-            <button
-              key={card.title}
-              onClick={() => setSelected(card)}
-              className={`bg-white text-left rounded-2xl p-8 flex flex-col gap-4 transition-colors duration-200 hover:bg-gray-100 cursor-pointer ${card.wide ? "md:col-span-2" : ""}`}
-            >
-              <card.Icon className="text-gray-800" size={24} />
-              <h3 className="text-gray-900 font-bold text-xl">{card.title}</h3>
-              <p className="text-gray-500 text-sm leading-relaxed flex-1">
-                {card.description}
-              </p>
-              <div className="flex justify-end pt-2">
-                <MdArrowForward className="text-gray-400" size={20} />
-              </div>
-            </button>
+          {cards.map((card, i) => (
+            <AnimatedCard key={card.title} card={card} delay={i * 120} onSelect={setSelected} />
           ))}
         </div>
       </div>
@@ -115,7 +123,6 @@ export default function Metodo() {
             className="bg-white rounded-2xl p-8 max-w-lg w-full flex flex-col gap-5 relative"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Fechar */}
             <button
               onClick={() => setSelected(null)}
               className="absolute top-5 right-5 text-gray-400 hover:text-gray-700 transition-colors"
@@ -123,7 +130,6 @@ export default function Metodo() {
               <MdClose size={22} />
             </button>
 
-            {/* Ícone + título */}
             <div className="flex items-center gap-3">
               <div className="w-11 h-11 rounded-xl bg-[#293132] flex items-center justify-center shrink-0">
                 <selected.Icon className="text-white" size={22} />
@@ -131,13 +137,10 @@ export default function Metodo() {
               <h3 className="text-gray-900 font-bold text-2xl">{selected.title}</h3>
             </div>
 
-            {/* Linha */}
             <div className="w-full h-px bg-gray-100" />
 
-            {/* Texto */}
             <p className="text-gray-600 text-base leading-relaxed">{selected.modal}</p>
 
-            {/* CTA */}
             <a
               href="#contato"
               onClick={() => setSelected(null)}
@@ -151,5 +154,41 @@ export default function Metodo() {
         </div>
       )}
     </section>
+  );
+}
+
+function AnimatedCard({
+  card,
+  delay,
+  onSelect,
+}: {
+  card: (typeof cards)[0];
+  delay: number;
+  onSelect: (c: (typeof cards)[0]) => void;
+}) {
+  const { ref, visible } = useInView(0.1);
+
+  return (
+    <div
+      ref={ref}
+      className={card.wide ? "md:col-span-2" : ""}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0px)" : "translateY(32px)",
+        transition: `opacity 0.65s ease ${delay}ms, transform 0.65s ease ${delay}ms`,
+      }}
+    >
+      <button
+        onClick={() => onSelect(card)}
+        className="w-full bg-white text-left rounded-2xl p-8 flex flex-col gap-4 transition-colors duration-200 hover:bg-gray-100 cursor-pointer"
+      >
+        <card.Icon className="text-gray-800" size={24} />
+        <h3 className="text-gray-900 font-bold text-xl">{card.title}</h3>
+        <p className="text-gray-500 text-sm leading-relaxed flex-1">{card.description}</p>
+        <div className="flex justify-end pt-2">
+          <MdArrowForward className="text-gray-400" size={20} />
+        </div>
+      </button>
+    </div>
   );
 }
